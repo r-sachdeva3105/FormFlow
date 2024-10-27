@@ -29,7 +29,7 @@ import {
 
 export default function Home() {
   return (
-    <div className="container min-w-full">
+    <div className="container min-w-full px-16 py-8">
       <Suspense fallback={<StatsCards loading={true} />}>
         <CardStatsWrapper />
       </Suspense>

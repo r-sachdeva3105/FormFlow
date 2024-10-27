@@ -6,7 +6,7 @@ import React, { ReactNode } from "react";
 
 function Layout({ children }: { children: ReactNode }) {
   return (
-    <div className="flex flex-col min-h-screen max-h-screen min-w-full bg-background">
+    <div className="flex flex-col h-screen min-w-full bg-background">
       <nav className="flex justify-between items-center border-b border-border px-8 py-4">
         <Logo />
         <div className="flex items-center gap-4">
@@ -14,7 +14,7 @@ function Layout({ children }: { children: ReactNode }) {
           <UserButton afterSignOutUrl="/sign-in" />
         </div>
       </nav>
-      <main className="w-full px-16 py-8">{children}</main>
+      <main className="w-full h-full">{children}</main>
     </div>
   );
 }
