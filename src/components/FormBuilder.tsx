@@ -6,12 +6,32 @@ import PreviewButton from "./PreviewButton";
 import SaveButton from "./SaveButton";
 import PublishButton from "./PublishButton";
 import Designer from "./Designer";
-import { DndContext } from "@dnd-kit/core";
+import {
+  DndContext,
+  MouseSensor,
+  TouchSensor,
+  useSensor,
+  useSensors,
+} from "@dnd-kit/core";
 import DragOverlayWrapper from "./DragOverlayWrapper";
 
 const FormBuilder = ({ form }: { form: Form }) => {
+  const mouseSensor = useSensor(MouseSensor, {
+    activationConstraint: {
+      distance: 10,
+    },
+  });
+
+  const touchSensor = useSensor(TouchSensor, {
+    activationConstraint: {
+      tolerance: 5,
+      delay: 300,
+    },
+  });
+
+  const sensors = useSensors(mouseSensor, touchSensor);
   return (
-    <DndContext>
+    <DndContext sensors={sensors}>
       <main className="h-full w-full flex flex-col">
         <nav className="flex justify-between items-center border-b-2 p-4">
           <h2 className="truncate font-semibold">

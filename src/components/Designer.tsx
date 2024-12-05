@@ -16,7 +16,8 @@ import { Button } from "./ui/button";
 import { BiSolidTrash } from "react-icons/bi";
 
 const Designer = () => {
-  const { elements, addElement } = useDesigner();
+  const { elements, selectedElement, setSelectedElement, addElement } =
+    useDesigner();
   const droppable = useDroppable({
     id: "droppable",
     data: {
@@ -40,7 +41,12 @@ const Designer = () => {
   });
   return (
     <div className="flex w-full h-full">
-      <div className="w-1/2 md:w-2/3 p-3">
+      <div
+        className="w-1/2 md:w-2/3 p-3"
+        onClick={() => {
+          if (selectedElement) setSelectedElement(null);
+        }}
+      >
         <div
           ref={droppable.setNodeRef}
           className={cn(
@@ -73,7 +79,7 @@ const Designer = () => {
 };
 
 function DesignerElementWrapper({ element }: { element: FormElementInstance }) {
-  const { removeElement } = useDesigner();
+  const { selectedElement, setSelectedElement, removeElement } = useDesigner();
   const [isMouseOver, setIsMouseOver] = useState<boolean>(false);
   const top = useDroppable({
     id: element.id + "-top",
@@ -105,6 +111,8 @@ function DesignerElementWrapper({ element }: { element: FormElementInstance }) {
   if (draggable.isDragging) return null;
 
   const DesignerElement = FormElements[element.type].designerComponent;
+
+  console.log(selectedElement);
   return (
     <div
       ref={draggable.setNodeRef}
@@ -113,6 +121,10 @@ function DesignerElementWrapper({ element }: { element: FormElementInstance }) {
       className="relative h-30 flex flex-col text-foreground rounded-md ring-1 ring-accent ring-inset hover:cursor-grab"
       onMouseEnter={() => setIsMouseOver(true)}
       onMouseLeave={() => setIsMouseOver(false)}
+      onClick={(e) => {
+        e.stopPropagation();
+        setSelectedElement(element);
+      }}
     >
       <div
         ref={top.setNodeRef}
@@ -130,7 +142,6 @@ function DesignerElementWrapper({ element }: { element: FormElementInstance }) {
               className="flex justify-center h-full border rounded-md rounded-l-none bg-red-500"
               onClick={(e) => {
                 e.stopPropagation();
-                console.log("clicked");
                 removeElement(element.id);
               }}
             >
