@@ -8,10 +8,11 @@ const PropertiesFormSidebar = () => {
   const { selectedElement, setSelectedElement } = useDesigner();
   if (!selectedElement) return null;
 
-  const PropertiesForm = FormElements[selectedElement?.type].formComponent;
+  const PropertiesForm =
+    FormElements[selectedElement?.type].propertiesComponent;
   return (
     <div className="flex flex-col p-2">
-      <div className="flex justify-between items-center">
+      <div className="flex justify-between items-center mb-2">
         <h2 className="text-md text-foreground/80 font-bold">Properties</h2>
         <Button
           size={"icon"}
@@ -21,7 +22,7 @@ const PropertiesFormSidebar = () => {
           <IoClose size={18} className="text-foreground/80" />
         </Button>
       </div>
-      <PropertiesForm />
+      <PropertiesForm elementInstance={selectedElement} />
     </div>
   );
 };

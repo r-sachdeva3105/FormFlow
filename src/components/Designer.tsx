@@ -25,24 +25,98 @@ const Designer = () => {
     },
   });
 
+  const swapElements = (activeIndex: number, overIndex: number) => {
+    const activeElement = elements.splice(activeIndex, 1)[0];
+    elements.splice(overIndex, 0, activeElement);
+  };
+
   useDndMonitor({
     onDragEnd: (event: DragEndEvent) => {
       const { active, over } = event;
       if (!active || !over) return;
+
       const isDesignerButton = active.data?.current?.isDesignerButton;
-      if (isDesignerButton) {
+
+      const isDroppingOverDesignerDropArea =
+        over?.data?.current?.designerDropArea;
+
+      const droppingElementOverDropArea =
+        isDesignerButton && isDroppingOverDesignerDropArea;
+
+      // console.log(isDesignerButton);
+
+      if (droppingElementOverDropArea) {
         const type = active?.data?.current?.type;
         const newElement = FormElements[type as ElementType].construct(
           idGenerator()
         );
-        addElement(0, newElement);
+        addElement(elements.length, newElement);
+      }
+
+      const isDroppingOverDesignerElement =
+        over?.data?.current?.isTop || over?.data?.current?.isBottom;
+
+      const droppingElementOverElement =
+        isDesignerButton && isDroppingOverDesignerElement;
+
+      if (droppingElementOverElement) {
+        const type = active?.data?.current?.type;
+        const newElement = FormElements[type as ElementType].construct(
+          idGenerator()
+        );
+
+        const elementIndex = elements.findIndex(
+          (e) => e.id === over?.data?.current?.id
+        );
+
+        if (elementIndex === -1) {
+          throw new Error("Element not found");
+        }
+
+        if (over?.data?.current?.isTop) {
+          addElement(elementIndex, newElement);
+        } else {
+          addElement(elementIndex + 1, newElement);
+        }
+      }
+
+      const isDraggingDesignerElement =
+        active?.data?.current?.isDesignerElement;
+
+      const isDraggingOverAnotherDesignerElement =
+        isDroppingOverDesignerElement && isDraggingDesignerElement;
+
+      if (isDraggingOverAnotherDesignerElement) {
+        const activeID = active?.data?.current?.id;
+        const overID = over?.data?.current?.id;
+
+        const activeIndex = elements.findIndex((e) => e.id === activeID);
+        const overIndex = elements.findIndex((e) => e.id === overID);
+
+        if (activeIndex === -1 || overIndex === -1) {
+          throw new Error("Element not found");
+        }
+
+        const isTop = over?.data?.current?.isTop;
+        let targetIndex;
+
+        if (overIndex < activeIndex) {
+          targetIndex = isTop ? overIndex : overIndex + 1;
+        } else {
+          targetIndex = isTop ? overIndex - 1 : overIndex;
+        }
+        swapElements(activeIndex, targetIndex);
+      } else {
+        const activeID = active?.data?.current?.id;
+        const activeIndex = elements.findIndex((e) => e.id === activeID);
+        swapElements(activeIndex, elements.length);
       }
     },
   });
   return (
     <div className="flex w-full h-full">
       <div
-        className="w-1/2 md:w-2/3 p-3"
+        className="w-2/3 sm:w-3/5 md:w-2/3 p-3"
         onClick={() => {
           if (selectedElement) setSelectedElement(null);
         }}
@@ -79,7 +153,7 @@ const Designer = () => {
 };
 
 function DesignerElementWrapper({ element }: { element: FormElementInstance }) {
-  const { selectedElement, setSelectedElement, removeElement } = useDesigner();
+  const { setSelectedElement, removeElement } = useDesigner();
   const [isMouseOver, setIsMouseOver] = useState<boolean>(false);
   const top = useDroppable({
     id: element.id + "-top",
@@ -112,7 +186,6 @@ function DesignerElementWrapper({ element }: { element: FormElementInstance }) {
 
   const DesignerElement = FormElements[element.type].designerComponent;
 
-  console.log(selectedElement);
   return (
     <div
       ref={draggable.setNodeRef}
