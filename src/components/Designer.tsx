@@ -116,7 +116,7 @@ const Designer = () => {
   return (
     <div className="flex w-full h-full">
       <div
-        className="w-2/3 sm:w-3/5 md:w-2/3 p-3"
+        className="w-4/5 sm:w-3/5 md:w-2/3 p-3"
         onClick={() => {
           if (selectedElement) setSelectedElement(null);
         }}

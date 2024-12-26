@@ -18,7 +18,7 @@ const SidebarButton = ({ formElement }: { formElement: FormElement }) => {
       ref={draggable.setNodeRef}
       variant={"outline"}
       className={cn(
-        "flex flex-col gap-2 cursor-grab sm:w-1/2 lg:w-1/3 h-32",
+        "flex flex-col gap-2 cursor-grab h-32",
         draggable.isDragging && "ring-2 ring-primary opacity-75"
       )}
       {...draggable.listeners}

@@ -1,13 +1,18 @@
 "use Client";
 
 import { MdTextFields } from "react-icons/md";
-import { ElementType, FormElement, FormElementInstance } from "../FormElements";
+import {
+  ElementType,
+  FormElement,
+  FormElementInstance,
+  SubmitFunction,
+} from "../FormElements";
 import { Label } from "../ui/label";
 import { Input } from "../ui/input";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import useDesigner from "../hooks/useDesigner";
 import {
   Form,
@@ -18,6 +23,7 @@ import {
   FormLabel,
 } from "../ui/form";
 import { Switch } from "../ui/switch";
+import { cn } from "@/lib/utils";
 
 const type: ElementType = "TextField";
 
@@ -49,6 +55,17 @@ export const TextFieldFormComponent: FormElement = {
   designerComponent: DesignerComponent,
   formComponent: FormComponent,
   propertiesComponent: PropertiesComponent,
+
+  validate: (
+    formElement: FormElementInstance,
+    currentValue: string
+  ): boolean => {
+    const element = formElement as CustomInstance;
+    if (element.extraAttributes.required && !currentValue) {
+      return false;
+    }
+    return true;
+  },
 };
 
 type CustomInstance = FormElementInstance & {
@@ -78,19 +95,54 @@ function DesignerComponent({
 
 function FormComponent({
   elementInstance,
+  submitValue,
+  isInvalid,
+  defaultValue,
 }: {
   elementInstance: FormElementInstance;
+  submitValue?: SubmitFunction;
+  isInvalid?: boolean;
+  defaultValue?: string;
 }) {
   const element = elementInstance as CustomInstance;
+
+  const [value, setValue] = useState(!!defaultValue ? defaultValue : "");
+  const [error, setError] = useState(false);
+
+  useEffect(() => {
+    setError(isInvalid === true);
+  }, [isInvalid]);
+
   const { label, placeholder, helperText, required } = element.extraAttributes;
   return (
     <div className="flex flex-col w-full gap-2">
-      <Label className="text-primary font-semibold">
+      <Label
+        className={cn("text-primary font-semibold", error && "text-red-500")}
+      >
         {label}
         {required && <span className="text-red-500"> *</span>}
       </Label>
-      <Input placeholder={placeholder} />
-      <p className="text-muted-foreground text-sm">{helperText}</p>
+      <Input
+        className={cn(error && "border-red-500")}
+        placeholder={placeholder}
+        value={value}
+        onChange={(e) => setValue(e.target.value)}
+        onBlur={(e) => {
+          const validate = TextFieldFormComponent.validate(
+            element,
+            e.target.value
+          );
+          setError(!validate);
+
+          if (!validate || !submitValue) return;
+          if (submitValue) submitValue(element.id, e.target.value);
+        }}
+      />
+      <p
+        className={cn("text-muted-foreground text-sm", error && "text-red-500")}
+      >
+        {helperText}
+      </p>
     </div>
   );
 }

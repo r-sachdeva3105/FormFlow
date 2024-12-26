@@ -46,7 +46,10 @@ const FormBuilder = ({ form }: { form: Form }) => {
     setElements(elements);
   }, [form, setElements]);
 
-  const shareURL = typeof window !== "undefined" ? `${window.location.origin}/submit/${form.shareUrl}` : '';
+  const shareURL =
+    typeof window !== "undefined"
+      ? `${window.location.origin}/submit/${form.shareUrl}`
+      : "";
 
   if (form.published) {
     return (
@@ -97,7 +100,7 @@ const FormBuilder = ({ form }: { form: Form }) => {
   return (
     <DndContext sensors={sensors}>
       <main className="h-full w-full flex flex-col">
-        <nav className="flex justify-between items-center border-b-2 p-4">
+        <nav className="flex flex-col sm:flex-row gap-2 sm:gap-0 justify-between items-center border-b-2 p-4">
           <h2 className="truncate font-semibold">
             <span className="font-medium text-muted-foreground mr-2">
               Form:

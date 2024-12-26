@@ -34,10 +34,9 @@ export default function Home() {
         <CardStatsWrapper />
       </Suspense>
       <Separator className="mt-8 mb-4" />
-      <h1 className="text-3xl font-bold tracking-tight col-span-2">
+      <h1 className="text-3xl font-bold tracking-tight col-span-2 mb-4">
         Your Forms
       </h1>
-      <Separator className="mt-4 mb-8" />
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         <CreateFormButton />
         <Suspense
@@ -86,7 +85,11 @@ function StatsCards(props: StatsCardsProps) {
         title="Submission Rate"
         icon={<LuTrendingUp className="text-yellow-600 w-5 h-5" />}
         helperText="Percentage of visitors who submitted"
-        value={`${data?.submissionRate || 0}%`}
+        value={`${
+          data?.submissionRate
+            ? Math.round(data?.submissionRate * 100) / 100
+            : 0
+        }%`}
         loading={loading}
         className="shadow-yellow-600 hover:shadow-yellow-600"
       />
@@ -94,7 +97,9 @@ function StatsCards(props: StatsCardsProps) {
         title="Bounce Rate"
         icon={<LuTrendingDown className="text-red-600 w-5 h-5" />}
         helperText="Percentage of visitors left without submitting"
-        value={`${data?.bounceRate || 0}%`}
+        value={`${
+          data?.bounceRate ? Math.round(data?.bounceRate * 100) / 100 : 0
+        }%`}
         loading={loading}
         className="shadow-red-600 hover:shadow-red-600"
       />
