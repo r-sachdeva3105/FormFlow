@@ -26,7 +26,7 @@ const FormContent = ({
 
   const validateForm: () => boolean = useCallback(() => {
     for (const element of content) {
-      const value = formValues.current[element.id];
+      const value = formValues.current[element.id] || "";
       const valid = FormElements[element.type].validate(element, value);
       if (!valid) {
         formErrors.current[element.id] = true;
@@ -64,7 +64,7 @@ const FormContent = ({
     } catch (error) {
       toast({
         title: "Error",
-        description: "An error occurred while submitting the form",
+        description: "An error occurred while submitting the form" + error,
         variant: "destructive",
       });
     }
@@ -93,7 +93,7 @@ const FormContent = ({
     <div className="flex justify-center items-center h-full w-full p-8">
       <div
         key={renderKey}
-        className="flex flex-col flex-grow items-center justify-center w-full max-w-lg gap-4 p-8 overflow-y-auto border rounded-xl transition-all duration-100 shadow-lg hover:shadow-xl shadow-blue-500 hover:shadow-blue-600"
+        className="flex flex-col flex-grow items-start justify-center w-full max-w-lg gap-4 p-8 overflow-y-auto border rounded-xl transition-all duration-100 shadow-lg hover:shadow-xl shadow-blue-500 hover:shadow-blue-600"
       >
         {content.map((element) => {
           const FormElement = FormElements[element.type].formComponent;

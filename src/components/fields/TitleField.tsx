@@ -74,9 +74,11 @@ function DesignerComponent({
 
 function FormComponent({
   elementInstance,
+  // @typescript-eslint/no-unused-vars
   submitValue,
 }: {
   elementInstance: FormElementInstance;
+  // @typescript-eslint/no-unused-vars
   submitValue?: SubmitFunction;
 }) {
   const element = elementInstance as CustomInstance;

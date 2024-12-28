@@ -23,6 +23,11 @@ const FormElementsSidebar = () => {
           Form Elements
         </p>
         <SidebarButton formElement={FormElements.TextField} />
+        <SidebarButton formElement={FormElements.TextareaField} />
+        <SidebarButton formElement={FormElements.NumberField} />
+        <SidebarButton formElement={FormElements.DateField} />
+        <SidebarButton formElement={FormElements.SelectField} />
+        <SidebarButton formElement={FormElements.CheckboxField} />
       </div>
     </div>
   );

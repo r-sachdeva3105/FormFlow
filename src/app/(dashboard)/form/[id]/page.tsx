@@ -10,11 +10,7 @@ import {
   LuView,
 } from "react-icons/lu";
 import { GetFormSubmission } from "@/actions/form";
-import {
-  ElementType,
-  FormElementInstance,
-  FormElements,
-} from "@/components/FormElements";
+import { ElementType, FormElementInstance } from "@/components/FormElements";
 import {
   Table,
   TableBody,
@@ -23,14 +19,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { formatDistance } from "date-fns";
-
-type CustomInstance = FormElementInstance & {
-  extraAttributes: {
-    label: string;
-    required: boolean;
-  };
-};
+import { format, formatDistance } from "date-fns";
 
 const page = async ({ params }: { params: { id: string } }) => {
   const id = params.id;
@@ -127,6 +116,11 @@ const SubmissionsTable = async ({ id }: { id: string }) => {
   formElements.forEach((element) => {
     switch (element.type) {
       case "TextField":
+      case "NumberField":
+      case "TextareaField":
+      case "DateField":
+      case "SelectField":
+      case "CheckboxField":
         columns.push({
           id: element.id,
           label: element.extraAttributes?.label,
@@ -191,5 +185,14 @@ const SubmissionsTable = async ({ id }: { id: string }) => {
 
 function RowCell({ type, value }: { type: ElementType; value: string }) {
   let node: ReactNode = value;
+  switch (type) {
+    case "DateField":
+      if (!value) break;
+      const date = new Date(value);
+      node = format(date, "yyyy-MM-dd");
+      break;
+    case "CheckboxField":
+      node = value === "true" ? "Checked" : "";
+  }
   return <TableCell>{node}</TableCell>;
 }

@@ -1,6 +1,5 @@
 "use Client";
 
-import { MdTextFields } from "react-icons/md";
 import {
   ElementType,
   FormElement,
@@ -24,13 +23,14 @@ import {
 } from "../ui/form";
 import { Switch } from "../ui/switch";
 import { cn } from "@/lib/utils";
+import { Bs123 } from "react-icons/bs";
 
-const type: ElementType = "TextField";
+const type: ElementType = "NumberField";
 
 const extraAttributes = {
-  label: "Text Field",
-  placeholder: "Enter text here",
-  helperText: "This is a text field",
+  label: "Number Field",
+  placeholder: "Enter number here",
+  helperText: "This is a number field",
   required: false,
 };
 
@@ -41,7 +41,7 @@ const propertiesSchema = z.object({
   required: z.boolean().default(false),
 });
 
-export const TextFieldFormComponent: FormElement = {
+export const NumberFieldFormComponent: FormElement = {
   type,
   construct: (id: string) => ({
     id,
@@ -49,8 +49,8 @@ export const TextFieldFormComponent: FormElement = {
     extraAttributes,
   }),
   designerButtonElement: {
-    label: "Text Field",
-    icon: MdTextFields,
+    label: "Number Field",
+    icon: Bs123,
   },
   designerComponent: DesignerComponent,
   formComponent: FormComponent,
@@ -61,8 +61,8 @@ export const TextFieldFormComponent: FormElement = {
     currentValue: string
   ): boolean => {
     const element = formElement as CustomInstance;
-    if (element.extraAttributes.required) {
-      return currentValue.length > 0;
+    if (element.extraAttributes.required && !currentValue) {
+      return false;
     }
     return true;
   },
@@ -87,7 +87,7 @@ function DesignerComponent({
         {label}
         {required && <span className="text-red-500"> *</span>}
       </Label>
-      <Input readOnly disabled placeholder={placeholder} />
+      <Input type="number" readOnly disabled placeholder={placeholder} />
       <p className="text-muted-foreground text-sm">{helperText}</p>
     </div>
   );
@@ -123,12 +123,13 @@ function FormComponent({
         {required && <span className="text-red-500"> *</span>}
       </Label>
       <Input
+        type="number"
         className={cn(error && "border-red-500")}
         placeholder={placeholder}
         value={value}
         onChange={(e) => setValue(e.target.value)}
         onBlur={(e) => {
-          const validate = TextFieldFormComponent.validate(
+          const validate = NumberFieldFormComponent.validate(
             element,
             e.target.value
           );
@@ -277,7 +278,7 @@ function PropertiesComponent({
                 </FormControl>
               </div>
               <FormDescription>
-                Whether the input field is required or not.
+                Whether the field is required or not.
               </FormDescription>
             </FormItem>
           )}

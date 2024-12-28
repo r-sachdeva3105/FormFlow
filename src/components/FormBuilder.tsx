@@ -24,7 +24,7 @@ import Link from "next/link";
 import Confetti from "react-confetti";
 
 const FormBuilder = ({ form }: { form: Form }) => {
-  const { setElements } = useDesigner();
+  const { setElements, setSelectedElement } = useDesigner();
   const { toast } = useToast();
   const mouseSensor = useSensor(MouseSensor, {
     activationConstraint: {
@@ -44,7 +44,8 @@ const FormBuilder = ({ form }: { form: Form }) => {
   useEffect(() => {
     const elements = JSON.parse(form.content);
     setElements(elements);
-  }, [form, setElements]);
+    setSelectedElement(null);
+  }, [form, setElements, setSelectedElement]);
 
   const shareURL =
     typeof window !== "undefined"

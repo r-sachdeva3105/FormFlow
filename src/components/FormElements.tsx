@@ -4,6 +4,11 @@ import { SubTitleFieldFormComponent } from "./fields/SubTitleField";
 import { ParagraphFieldFormComponent } from "./fields/ParagraphField";
 import { SeparatorFieldFormComponent } from "./fields/SeparatorField";
 import { SpacerFieldFormComponent } from "./fields/SpacerField";
+import { NumberFieldFormComponent } from "./fields/NumberField";
+import { TextareaFieldFormComponent } from "./fields/TextareaField";
+import { DateFieldFormComponent } from "./fields/DateField";
+import { SelectFieldFormComponent } from "./fields/SelectField";
+import { CheckboxFieldFormComponent } from "./fields/CheckboxField";
 
 export type ElementType =
   | "TextField"
@@ -11,7 +16,12 @@ export type ElementType =
   | "SubTitleField"
   | "ParagraphField"
   | "SeparatorField"
-  | "SpacerField";
+  | "SpacerField"
+  | "NumberField"
+  | "TextareaField"
+  | "DateField"
+  | "SelectField"
+  | "CheckboxField";
 
 export type SubmitFunction = (key: string, value: string) => void;
 
@@ -44,6 +54,7 @@ export type FormElement = {
 export type FormElementInstance = {
   id: string;
   type: ElementType;
+  // eslint-disable-next-line  @typescript-eslint/no-explicit-any
   extraAttributes?: Record<string, any>;
 };
 
@@ -58,4 +69,9 @@ export const FormElements: FormElementsType = {
   ParagraphField: ParagraphFieldFormComponent,
   SeparatorField: SeparatorFieldFormComponent,
   SpacerField: SpacerFieldFormComponent,
+  NumberField: NumberFieldFormComponent,
+  TextareaField: TextareaFieldFormComponent,
+  DateField: DateFieldFormComponent,
+  SelectField: SelectFieldFormComponent,
+  CheckboxField: CheckboxFieldFormComponent,
 };
