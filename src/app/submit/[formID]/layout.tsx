@@ -9,7 +9,7 @@ function Layout({ children }: { children: ReactNode }) {
         <Logo />
         <ThemeSwitcher />
       </nav>
-      <main className="w-full h-full">{children}</main>
+      <main className="w-full">{children}</main>
     </div>
   );
 }

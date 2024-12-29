@@ -102,7 +102,7 @@ const FormContent = ({
               key={element.id}
               elementInstance={element}
               submitValue={submitValue}
-              isValid={formErrors.current[element.id]}
+              isInvalid={formErrors.current[element.id]}
               defaultValue={formValues.current[element.id]}
             />
           );

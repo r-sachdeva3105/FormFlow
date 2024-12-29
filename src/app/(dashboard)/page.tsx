@@ -68,7 +68,7 @@ function StatsCards(props: StatsCardsProps) {
       <StatsCard
         title="Total Visits"
         icon={<LuView className="text-blue-600 w-5 h-5" />}
-        helperText="Total number of visits to your form"
+        helperText="Total number of visits to your forms"
         value={`${data?.visits || 0}`}
         loading={loading}
         className="shadow-blue-600 hover:shadow-blue-600"
@@ -76,7 +76,7 @@ function StatsCards(props: StatsCardsProps) {
       <StatsCard
         title="Total Submissions"
         icon={<LuFileText className="text-green-600 w-5 h-5" />}
-        helperText="Total number of submissions to your form"
+        helperText="Total number of submissions to your forms"
         value={`${data?.submissions || 0}`}
         loading={loading}
         className="shadow-green-600 hover:shadow-green-600"
