@@ -27,6 +27,12 @@ A **Next.js** application that allows users to create and customize beautiful fo
 
 ---
 
+## 🌐 Live Demo  
+
+Check out the live demo of the project: [Live Demo](https://tryformflow.vercel.app/) 
+
+---
+
 ## 🛠️ Installation  
 
 1. **Clone the Repository**:  
@@ -76,12 +82,6 @@ A **Next.js** application that allows users to create and customize beautiful fo
    ```bash  
    npx prisma migrate deploy  
    ```  
-
----
-
-## 🌐 Live Demo  
-
-Check out the live demo of the project: [Live Demo](https://tryformflow.vercel.app/) 
 
 ---
 
