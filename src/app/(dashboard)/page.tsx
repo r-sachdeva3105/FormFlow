@@ -174,7 +174,7 @@ function FormCard({ form }: { form: Form }) {
           {formatDistance(form.createdAt, new Date(), {
             addSuffix: true,
           })}
-          {!form.published && (
+          {form.published && (
             <span className="flex items-center gap-2">
               <LuView />
               <span>{form.visits.toLocaleString()}</span>
